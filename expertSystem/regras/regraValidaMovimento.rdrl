@@ -1,0 +1,22 @@
+package com.ops.expertsystem.regras;
+
+import java.lang.Number;
+import com.ops.expertsystem.auxiliar.ValidacaoValorMovimento;
+import com.ops.expertsystem.containercontrato.Procedimento;
+import com.ops.expertsystem.Movimento;
+import com.ops.expertsystem.analise.Resultado;
+import com.ops.expertsystem.analise.Item;
+
+rule "regraValidaMovimento"
+	dialect "mvel"
+	salience 10
+	when
+		validacao : ValidacaoValorMovimento( valorCobrado : movimento.valorTotal, valorContrato : procedimento.valor < ( valorCobrado ) , codMov : movimento.codigoMovimento.trim())
+	then
+		Item fact0 = new Item();
+		fact0.setCategoria( "bloqueio" );
+		fact0.setDescricao( "Valor acima do contrato de prestação de serviços" );
+		fact0.setCodigoProcedimento( codMov );
+		insert( fact0 );
+		System.out.println("regraValidaMovimento");
+end

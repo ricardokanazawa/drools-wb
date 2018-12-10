@@ -1,0 +1,26 @@
+package com.ops.expertsystem.regras.meta;
+
+import java.lang.Number;
+import com.ops.expertsystem.containercontrato.Contrato;
+import com.ops.expertsystem.containercontrato.Prestador;
+import com.ops.expertsystem.containercontrato.Procedimento;
+import com.ops.expertsystem.Guia;
+import com.ops.expertsystem.Movimento;
+import com.ops.expertsystem.auxiliar.ValidacaoValorMovimento;
+
+rule "metaAtivarValidacaoMovimento"
+	dialect "mvel"
+	salience 1000
+	when
+		guia : Guia( movs : movimentos != null , codPrestador : codigoPrestador)
+		Prestador( codigoPrestador == codPrestador , contratos : contratos)
+		movimento : Movimento( codigoMov : codigoMovimento, dataExec : dataExecucao) from movs
+		Contrato( inicio <= dataExec , fim >= dataExec , procedimentos : procedimentos) from contratos
+		procedimento : Procedimento( codigoProcedimento == codigoMov ) from procedimentos
+	then
+		ValidacaoValorMovimento fact0 = new ValidacaoValorMovimento();
+		fact0.setMovimento( movimento );
+		fact0.setProcedimento( procedimento );
+		insert( fact0 );
+		System.out.println("meta");
+end

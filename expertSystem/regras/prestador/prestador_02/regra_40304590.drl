@@ -1,0 +1,48 @@
+package com.ops.expertsystem.regras.prestador.prestador_02;
+
+rule "40304590_500" 
+	salience 500
+	when
+		$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 2 )
+		com.ops.expertsystem.Guia(movs: movimentos)
+		com.ops.expertsystem.Movimento(codigoMovimento == "40304590") from movs
+
+		com.ops.expertsystem.Movimento(codigoMovimento == "70222789") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "70223190") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "70705259") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "70705330") from movs
+	then
+		retract( $metaRegra );
+		insert( new com.ops.expertsystem.analise.Item("40304590","Itens { 70222789, 70223190, 70705259, 70705330 } realizados a partir do procedimento {40304590}. Prob: 91,67", "alerta" ) );
+end
+
+rule "40304590_499" 
+	salience 499
+	when
+		$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 2 )
+		com.ops.expertsystem.Guia(movs: movimentos)
+		com.ops.expertsystem.Movimento(codigoMovimento == "40304590") from movs
+
+		com.ops.expertsystem.Movimento(codigoMovimento == "70015368") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "70223190") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "70705259") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "70705330") from movs
+	then
+		retract( $metaRegra );
+		insert( new com.ops.expertsystem.analise.Item("40304590","Itens { 70015368, 70223190, 70705259, 70705330 } realizados a partir do procedimento {40304590}. Prob: 88,00", "alerta" ) );
+end
+
+rule "40304590_498" 
+	salience 498
+	when
+		$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 2 )
+		com.ops.expertsystem.Guia(movs: movimentos)
+		com.ops.expertsystem.Movimento(codigoMovimento == "40304590") from movs
+
+		com.ops.expertsystem.Movimento(codigoMovimento == "251137") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "70705356") from movs
+	then
+		retract( $metaRegra );
+		insert( new com.ops.expertsystem.analise.Item("40304590","Itens { 251137, 70705356 } realizados a partir do procedimento {40304590}. Prob: 81,48", "alerta" ) );
+end
+

@@ -1,0 +1,16 @@
+package com.ops.expertsystem.regras.prestador.prestador_02;
+
+rule "20103212_500" 
+	salience 500
+	when
+		$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 2 )
+		com.ops.expertsystem.Guia(movs: movimentos)
+		com.ops.expertsystem.Movimento(codigoMovimento == "20103212") from movs
+
+		com.ops.expertsystem.Movimento(codigoMovimento == "70705356") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "90123107") from movs
+	then
+		retract( $metaRegra );
+		insert( new com.ops.expertsystem.analise.Item("20103212","Itens { 70705356, 90123107 } realizados a partir do procedimento {20103212}. Prob: 81,48", "alerta" ) );
+end
+

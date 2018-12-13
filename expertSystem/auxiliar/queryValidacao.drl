@@ -1,5 +1,0 @@
-package com.ops.expertsystem.queries;
-
-query "queryValidacao" 
-    validacao: com.ops.expertsystem.analise.Item( )
-end

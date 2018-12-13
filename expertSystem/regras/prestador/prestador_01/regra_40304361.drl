@@ -1,0 +1,129 @@
+package com.ops.expertsystem.regras.prestador.prestador_01;
+
+rule "40304361_500" 
+	salience 500
+	when
+		$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 1 )
+		com.ops.expertsystem.Guia(movs: movimentos)
+		com.ops.expertsystem.Movimento(codigoMovimento == "40304361") from movs
+
+		com.ops.expertsystem.Movimento(codigoMovimento == "124865") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "70014310") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "70705330") from movs
+	then
+		retract( $metaRegra );
+		insert( new com.ops.expertsystem.analise.Item("40304361","Itens { 124865, 70014310, 70705330 } realizados a partir do procedimento {40304361}. Prob: 82,05", "alerta" ) );
+end
+
+rule "40304361_499" 
+	salience 499
+	when
+		$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 1 )
+		com.ops.expertsystem.Guia(movs: movimentos)
+		com.ops.expertsystem.Movimento(codigoMovimento == "40304361") from movs
+
+		com.ops.expertsystem.Movimento(codigoMovimento == "124865") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "129874") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "70014310") from movs
+	then
+		retract( $metaRegra );
+		insert( new com.ops.expertsystem.analise.Item("40304361","Itens { 124865, 129874, 70014310 } realizados a partir do procedimento {40304361}. Prob: 82,76", "alerta" ) );
+end
+
+rule "40304361_498" 
+	salience 498
+	when
+		$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 1 )
+		com.ops.expertsystem.Guia(movs: movimentos)
+		com.ops.expertsystem.Movimento(codigoMovimento == "40304361") from movs
+
+		com.ops.expertsystem.Movimento(codigoMovimento == "72845") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "124865") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "70014310") from movs
+	then
+		retract( $metaRegra );
+		insert( new com.ops.expertsystem.analise.Item("40304361","Itens { 72845, 124865, 70014310 } realizados a partir do procedimento {40304361}. Prob: 82,79", "alerta" ) );
+end
+
+rule "40304361_497" 
+	salience 497
+	when
+		$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 1 )
+		com.ops.expertsystem.Guia(movs: movimentos)
+		com.ops.expertsystem.Movimento(codigoMovimento == "40304361") from movs
+
+		com.ops.expertsystem.Movimento(codigoMovimento == "124865") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "70014310") from movs
+	then
+		retract( $metaRegra );
+		insert( new com.ops.expertsystem.analise.Item("40304361","Itens { 124865, 70014310 } realizados a partir do procedimento {40304361}. Prob: 83,20", "alerta" ) );
+end
+
+rule "40304361_496" 
+	salience 496
+	when
+		$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 1 )
+		com.ops.expertsystem.Guia(movs: movimentos)
+		com.ops.expertsystem.Movimento(codigoMovimento == "40304361") from movs
+
+		com.ops.expertsystem.Movimento(codigoMovimento == "72845") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "124865") from movs
+	then
+		retract( $metaRegra );
+		insert( new com.ops.expertsystem.analise.Item("40304361","Itens { 72845, 124865 } realizados a partir do procedimento {40304361}. Prob: 84,62", "alerta" ) );
+end
+
+rule "40304361_495" 
+	salience 495
+	when
+		$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 1 )
+		com.ops.expertsystem.Guia(movs: movimentos)
+		com.ops.expertsystem.Movimento(codigoMovimento == "40304361") from movs
+
+		com.ops.expertsystem.Movimento(codigoMovimento == "90019849") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "90104986") from movs
+	then
+		retract( $metaRegra );
+		insert( new com.ops.expertsystem.analise.Item("40304361","Itens { 90019849, 90104986 } realizados a partir do procedimento {40304361}. Prob: 90,80", "alerta" ) );
+end
+
+rule "40304361_494" 
+	salience 494
+	when
+		$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 1 )
+		com.ops.expertsystem.Guia(movs: movimentos)
+		com.ops.expertsystem.Movimento(codigoMovimento == "40304361") from movs
+
+		com.ops.expertsystem.Movimento(codigoMovimento == "90019865") from movs
+		com.ops.expertsystem.Movimento(codigoMovimento == "90104986") from movs
+	then
+		retract( $metaRegra );
+		insert( new com.ops.expertsystem.analise.Item("40304361","Itens { 90019865, 90104986 } realizados a partir do procedimento {40304361}. Prob: 80,20", "alerta" ) );
+end
+
+rule "40304361_493" 
+	salience 493
+	when
+		$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 1 )
+		com.ops.expertsystem.Guia(movs: movimentos)
+		com.ops.expertsystem.Movimento(codigoMovimento == "40304361") from movs
+
+		com.ops.expertsystem.Movimento(codigoMovimento == "72845") from movs
+	then
+		retract( $metaRegra );
+		insert( new com.ops.expertsystem.analise.Item("40304361","Itens { 72845 } realizados a partir do procedimento {40304361}. Prob: 83,35", "alerta" ) );
+end
+
+rule "40304361_492" 
+	salience 492
+	when
+		$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 1 )
+		com.ops.expertsystem.Guia(movs: movimentos)
+		com.ops.expertsystem.Movimento(codigoMovimento == "40304361") from movs
+
+		com.ops.expertsystem.Movimento(codigoMovimento == "124865") from movs
+	then
+		retract( $metaRegra );
+		insert( new com.ops.expertsystem.analise.Item("40304361","Itens { 124865 } realizados a partir do procedimento {40304361}. Prob: 84,78", "alerta" ) );
+end
+

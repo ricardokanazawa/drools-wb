@@ -98,6 +98,7 @@ public class Converter {
 	        	bw.write("\tsalience " + (500 - i) );	bw.newLine();	        	
 	        	bw.write("\twhen");	bw.newLine();
 	        	bw.write("\t\t$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 1 )");	bw.newLine();
+	        	bw.write("\t\tcom.ops.expertsystem.Guia(movs: movimentos)");	bw.newLine();
 	        	bw.write("\t\tcom.ops.expertsystem.Movimento(codigoMovimento == \"" + ruleIn.getConsequente()  +"\") from movs");	bw.newLine();
 	        	bw.newLine();
 	        	for (String antecedent : ruleIn.getAntecedentes()) {
@@ -105,7 +106,7 @@ public class Converter {
 				}
 	        	bw.write("\tthen");	  bw.newLine();
 	        	bw.write("\t\tretract( $metaRegra );");	  bw.newLine();
-	        	bw.write("\t\tinsert( new com.ops.expertsystem.analise.Item(\""+ ruleIn.getConsequente()  +"\",\"Procedimentos { " + String.join(", ", ruleIn.getAntecedentes())  +" } realizados a partir do procedimento {" + ruleIn.getConsequente() + "}. Prob: " + String.format("%.2f", mediaProb) +"\", \"alerta\" ) );");	  bw.newLine();
+	        	bw.write("\t\tinsert( new com.ops.expertsystem.analise.Item(\""+ ruleIn.getConsequente()  +"\",\"Itens { " + String.join(", ", ruleIn.getAntecedentes())  +" } realizados a partir do procedimento {" + ruleIn.getConsequente() + "}. Prob: " + String.format("%.2f", mediaProb) +"\", \"alerta\" ) );");	  bw.newLine();
 	        	bw.write("end"); 	bw.newLine();
 	        	bw.newLine();
 	        }	

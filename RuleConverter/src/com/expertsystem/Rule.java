@@ -22,6 +22,10 @@ public class Rule implements Comparable<Rule>{
 		return String.format("%.2f", new BigDecimal(Float.parseFloat(this.probabilidade)*100));
 	}
 	
+	public Float getProbabilidadeFloat() {
+		return Float.parseFloat(this.probabilidade)*100;
+	}
+	
 	public Rule(java.lang.String consequente, String[] antecedentes, String probabilidade) {
 		this.consequente = consequente;
 		this.antecedentes = antecedentes;

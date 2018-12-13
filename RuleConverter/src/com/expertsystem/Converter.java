@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -81,18 +82,17 @@ public class Converter {
 	        for(int i = 0; i < arraylist.size(); i++) {	  
 	        	
         		Rule ruleIn = arraylist.get(i);
-	        	
-				Rule topRule = arraylist.stream()
-						.filter(r -> String.join(", ", r.getAntecedentes()).equals(String.join(", ", ruleIn.getAntecedentes())))
-						.sorted(Comparator.comparing(Rule::getProbabilidade).reversed())
-						.findFirst()
-						.get();
-				 
+        		
 				if (unifiedRules.containsKey(String.join(", ", ruleIn.getAntecedentes()))) {
 					continue;
-				}				
+				}
 				
-				unifiedRules.put(String.join(", ", ruleIn.getAntecedentes()), topRule);
+				Double mediaProb = arraylist.stream()
+						.filter(r -> String.join(", ", r.getAntecedentes()).equals(String.join(", ", ruleIn.getAntecedentes())))
+						.mapToDouble(Rule::getProbabilidadeFloat)
+						.average().orElse(0);	  
+				
+				unifiedRules.put(String.join(", ", ruleIn.getAntecedentes()), ruleIn);
 	        	
 	        	bw.write("rule \"" + ruleIn.getConsequente()  + "_" + (500 - i) + "\" ");	bw.newLine();
 	        	bw.write("\tsalience " + (500 - i) );	bw.newLine();	        	
@@ -105,7 +105,7 @@ public class Converter {
 				}
 	        	bw.write("\tthen");	  bw.newLine();
 	        	bw.write("\t\tretract( $metaRegra );");	  bw.newLine();
-	        	bw.write("\t\tinsert( new com.ops.expertsystem.analise.Item(\""+ ruleIn.getConsequente()  +"\",\"Procedimentos { " + String.join(", ", ruleIn.getAntecedentes())  +" } realizados a partir do procedimento {" + ruleIn.getConsequente() + "}. Prob: " + ruleIn.getProbabilidade() +"\", \"alerta\" ) );");	  bw.newLine();
+	        	bw.write("\t\tinsert( new com.ops.expertsystem.analise.Item(\""+ ruleIn.getConsequente()  +"\",\"Procedimentos { " + String.join(", ", ruleIn.getAntecedentes())  +" } realizados a partir do procedimento {" + ruleIn.getConsequente() + "}. Prob: " + String.format("%.2f", mediaProb) +"\", \"alerta\" ) );");	  bw.newLine();
 	        	bw.write("end"); 	bw.newLine();
 	        	bw.newLine();
 	        }	

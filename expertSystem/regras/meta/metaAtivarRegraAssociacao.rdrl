@@ -1,0 +1,18 @@
+package com.ops.expertsystem.regras.meta;
+
+import java.lang.Number;
+import com.ops.expertsystem.Guia;
+import com.ops.expertsystem.Movimento;
+import com.ops.expertsystem.auxiliar.AtivaRegraAssociacao;
+
+rule "metaAtivarRegraAssociacao"
+	dialect "mvel"
+	salience 1000
+	when
+		Guia( cdPrestador : codigoPrestador)
+	then
+		AtivaRegraAssociacao fact0 = new AtivaRegraAssociacao();
+		fact0.setCodigoPrestador( cdPrestador );
+		insertLogical( fact0 );
+		System.out.println("meta - Ativa regra de associacao");
+end

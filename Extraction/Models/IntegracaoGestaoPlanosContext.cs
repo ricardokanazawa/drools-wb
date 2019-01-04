@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace FpGrowthCore.Models
+namespace Extraction.Models
 {
     public class IntegracaoGestaoPlanosContext : DbContext
     {

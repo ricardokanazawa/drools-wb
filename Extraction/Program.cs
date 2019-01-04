@@ -21,12 +21,12 @@ namespace Extration
 
             using (var db = new IntegracaoGestaoPlanosContext())
             {
-                List<TransacaoBeneficiario> lst = db.Transacoes.FromSql("[PortalPrestador].[SP_TRANSACOES_EXP] @Id_Prestador = {0}, @Dt_inicio = {1}, @Dt_fim = {2}, @Cd_Procedimento = {3}",
+                List<TransacaoBeneficiario> lst = db.Transacoes.FromSql("[SP_TRANSACOES_EXP] @Id_Prestador = {0}, @Dt_inicio = {1}, @Dt_fim = {2}, @Cd_Procedimento = {3}",
                     1, new DateTime(2017, 1, 1), new DateTime(2018, 1, 1), "60002450").ToList();
 
-                foreach (var transacao in lst.Where(l => l.NumeroGuia != "6ECE35CEF707D7313F9F2F8E45F214A36380BF5A" && l.NumeroGuia != "E4F973BBC5D9618E223C7BF49FCFE3636A24FA95"))
+                foreach (var transacao in lst)
                 {
-                    List<TransacaoBeneficiario> lst2 = db.Transacoes.FromSql("[PortalPrestador].[SP_TRANSACOES_EXP] @Id_Prestador = {0}, @Dt_inicio = {1}, @Dt_fim = {2}, @Carteira = {3}",
+                    List<TransacaoBeneficiario> lst2 = db.Transacoes.FromSql("[SP_TRANSACOES_EXP] @Id_Prestador = {0}, @Dt_inicio = {1}, @Dt_fim = {2}, @Carteira = {3}",
                     1, new DateTime(2017, 1, 1), new DateTime(2018, 1, 1), transacao.Carteira).ToList();
 
                     foreach (var transacaoFim in lst2.Where(l => l.DataExecucao <= transacao.DataExecucao))

@@ -29,9 +29,11 @@ public class Converter {
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws IOException {
 		
+		String codigoPrestador = "3";
+		
 		List<com.expertsystem.Rule> rules = new ArrayList<com.expertsystem.Rule>();
 		
-		try (Stream<Path> paths = Files.walk(Paths.get("C:\\temp\\transacoes\\PRESTADOR 1\\FINAL"))) {
+		try (Stream<Path> paths = Files.walk(Paths.get("C:\\temp\\transacoes\\PRESTADOR " + codigoPrestador +"\\FINAL"))) {
 			paths.forEach(filePath -> {
 		        if (Files.isRegularFile(filePath)) {
 		            System.out.println(filePath);
@@ -42,11 +44,27 @@ public class Converter {
 		                String line = br.readLine();
 
 		                while (line != null) {
-		                	String[] split1 = line.split("#SUP");
+		                	String[] split1 = line.split("#SUP:");
 		                	String[] splitRegra = split1[0].split("==>");		
 		                	String[] splitConf = split1[1].split("#CONF:");
 		                	
-		                	rules.add(new Rule(splitRegra[1].trim(), splitRegra[0].split(" "), splitConf[1]));		                	
+		                	boolean regraExistente = false;
+		                	
+		                	// SE REGRA JÁ EXISTIR ATUALIZA O VALOR
+		                	for (com.expertsystem.Rule rule : rules) {
+		                		if (rule.getAntecedentes() == splitRegra[0].trim().split(" ") &&
+		                		    rule.getConsequentes() == splitRegra[1].trim().split(" "))
+		                		{
+		                			//rule.updateSuporte(splitConf[0]);
+		                			regraExistente = true;
+		                			break;
+		                		}		                		
+		                	}
+		                	
+		                	if (!regraExistente) {
+		                		rules.add(new Rule(splitRegra[1].trim().split(" "), splitRegra[0].trim().split(" "), splitConf[0], splitConf[1]));	
+		                	}
+		                			                	
 		                    line = br.readLine();
 		                }
 		            } catch (Exception e) {
@@ -56,63 +74,63 @@ public class Converter {
 		    });
 		}
 
+	    Collections.sort(rules, Rule.RuleNameComparator);
+	    
+	    File f = new File("C:\\temp\\transacoes\\PRESTADOR " + codigoPrestador + "\\FINAL\\RESULTS\\regras prestador " + codigoPrestador + ".drl");
+		if(f.exists() && !f.isDirectory()) { 
+		    return;
+		}				  
+	    
+	    FileOutputStream fos = new FileOutputStream(f);	        
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+        
+        bw.write("package com.ops.expertsystem.regras;");bw.newLine();
+        bw.newLine();
+                
+        bw.write("import com.ops.expertsystem.Controle;"); bw.newLine();
+        bw.write("import com.ops.expertsystem.Guia;"); bw.newLine();
+        bw.write("import com.ops.expertsystem.Movimento;"); bw.newLine();
+        bw.write("import com.ops.expertsystem.analise.AtivaRegraAssociacao;"); bw.newLine();
+        bw.write("import com.ops.expertsystem.analise.ResultadoItem;"); bw.newLine();
+        bw.newLine();
+        
+        int indexRule = 5000;   
+        int index = 0;
+        
 		for (com.expertsystem.Rule rule : rules) {
 			
-			File f = new File("C:\\temp\\transacoes\\PRESTADOR 1\\FINAL\\RESULTS\\regra_" + rule.getConsequente() + ".drl");
-			if(f.exists() && !f.isDirectory()) { 
-			    continue;
-			}
+			index = index + 1;
 			
-	        List<Rule> arraylist = rules.stream()
-	        		.filter(r -> r.getConsequente().equals(rule.getConsequente()))	        		
-	        		.collect(Collectors.toList());	   
-	        
-	        Collections.sort(arraylist);
-	        
-	        
-	        FileOutputStream fos = new FileOutputStream(f);	        
-	        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-	        
-	        bw.write("package com.ops.expertsystem.regras.prestador.prestador_01;");
-	        bw.newLine();
-	        bw.newLine();
-	        
-	        Map<String,Rule> unifiedRules = new HashMap<String,Rule>();
-	        
-	        for(int i = 0; i < arraylist.size(); i++) {	  
-	        	
-        		Rule ruleIn = arraylist.get(i);
-        		
-				if (unifiedRules.containsKey(String.join(", ", ruleIn.getAntecedentes()))) {
-					continue;
-				}
-				
-				Double mediaProb = arraylist.stream()
-						.filter(r -> String.join(", ", r.getAntecedentes()).equals(String.join(", ", ruleIn.getAntecedentes())))
-						.mapToDouble(Rule::getProbabilidadeFloat)
-						.average().orElse(0);	  
-				
-				unifiedRules.put(String.join(", ", ruleIn.getAntecedentes()), ruleIn);
-	        	
-	        	bw.write("rule \"" + ruleIn.getConsequente()  + "_" + (500 - i) + "\" ");	bw.newLine();
-	        	bw.write("\tsalience " + (500 - i) );	bw.newLine();	        	
-	        	bw.write("\twhen");	bw.newLine();
-	        	bw.write("\t\t$metaRegra: com.ops.expertsystem.auxiliar.AtivaRegraAssociacao(codigoPrestador == 1 )");	bw.newLine();
-	        	bw.write("\t\tcom.ops.expertsystem.Guia(movs: movimentos)");	bw.newLine();
-	        	bw.write("\t\tcom.ops.expertsystem.Movimento(codigoMovimento == \"" + ruleIn.getConsequente()  +"\") from movs");	bw.newLine();
-	        	bw.newLine();
-	        	for (String antecedent : ruleIn.getAntecedentes()) {
-	        		bw.write("\t\tcom.ops.expertsystem.Movimento(codigoMovimento == \"" + antecedent  +"\") from movs");	bw.newLine();
-				}
-	        	bw.write("\tthen");	  bw.newLine();
-	        	bw.write("\t\tretract( $metaRegra );");	  bw.newLine();
-	        	bw.write("\t\tinsert( new com.ops.expertsystem.analise.Item(\""+ ruleIn.getConsequente()  +"\",\"Itens { " + String.join(", ", ruleIn.getAntecedentes())  +" } realizados a partir do procedimento {" + ruleIn.getConsequente() + "}. Prob: " + String.format("%.2f", mediaProb) +"\", \"alerta\" ) );");	  bw.newLine();
-	        	bw.write("end"); 	bw.newLine();
-	        	bw.newLine();
-	        }	
-	        
-	        bw.close();
-	    }		
-	}	
-
+			String nomeRegra =  "prestador" + codigoPrestador  +"_" + (indexRule - index);
+			
+			bw.write("//SUPORTE: " + rule.getSuporteFloat());	bw.newLine();
+        	bw.write("rule \"" + nomeRegra + "\" ");	bw.newLine();
+        	bw.write("\tsalience " + (indexRule - index) );	bw.newLine();	      
+        	bw.write("\tno-loop true");	bw.newLine();
+        	
+        	bw.write("\twhen");	bw.newLine();
+        	bw.write("\t\t$metaRegra: AtivaRegraAssociacao(codigoPrestador == " + codigoPrestador + " )");	bw.newLine();
+        	bw.newLine();
+        	bw.write("\t\tControle($maxRegras: maxRegras)");	bw.newLine();
+        	bw.write("\t\t$i : Number(intValue <= $maxRegras - 1) from accumulate($ri : ResultadoItem(), count($ri))");	bw.newLine();
+        	bw.write("\t\tnot(ResultadoItem(nomeRegra == \"" + nomeRegra  +"\"))");	bw.newLine();    
+        	bw.newLine();   
+        	bw.write("\t\tGuia(movs: movimentos)");	bw.newLine();        	
+        	for (String consequent : rule.getConsequentes()) {
+        		bw.write("\t\tMovimento(codigoMovimento == \"" + consequent  +"\") from movs");	bw.newLine();
+			}
+        	
+        	bw.newLine();
+        	for (String antecedent : rule.getAntecedentes()) {
+        		bw.write("\t\tMovimento(codigoMovimento == \"" + antecedent  +"\") from movs");	bw.newLine();
+			}
+        	bw.write("\tthen");	  bw.newLine();
+        	//bw.write("\t\tretract( $metaRegra );");	  bw.newLine();
+        	bw.write("\t\tinsert( new ResultadoItem(\""+ nomeRegra +"\", \"0\",\"Itens { " + String.join(", ", rule.getAntecedentes())  +" } realizados a partir do procedimentos {" + String.join(", ", rule.getConsequentes()) + "}. Prob: " + String.format("%.2f", rule.getConfiancaFloat()) +"\", \"alerta\" ) );");	  bw.newLine();
+        	bw.write("end"); 	bw.newLine();
+        	bw.newLine();
+	    }
+		
+		bw.close();
+	}
 }

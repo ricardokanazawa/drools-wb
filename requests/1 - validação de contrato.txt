@@ -1,0 +1,36 @@
+POST /kie-server/services/rest/server/containers/instances/ExpertSystem HTTP/1.1
+Host: ricardokanazawa.eastus2.cloudapp.azure.com:8081
+Content-Type: application/xml
+Authorization: Basic YWRtaW46YWRtaW4=
+X-KIE-ContentType: XSTREAM
+Cache-Control: no-cache
+Postman-Token: 41b51946-46d7-bfda-48ab-dc70ee191ef0
+
+<batch-execution lookup="MyStateless">
+  <insert>
+    <com.ops.expertsystem.Guia>
+      <id>BD029514538FE9F73D29DD258FB0C13F9E4A259E</id>
+      <codigoPrestador>1</codigoPrestador>
+      <movimentos>
+      	<com.ops.expertsystem.Movimento>
+          <codigoTabela>22</codigoTabela>
+          <codigoMovimento>60000554</codigoMovimento>
+          <descricao>DIÁRIA DE APARTAMENTO</descricao>
+          <valorUnitario>650.25</valorUnitario>
+          <quantidadeExecutada>1.0</quantidadeExecutada>
+          <dataExecucao>2017-01-05 14:00:00.0 UTC</dataExecucao>
+        </com.ops.expertsystem.Movimento>
+        <com.ops.expertsystem.Movimento>
+          <codigoTabela>22</codigoTabela>
+          <codigoMovimento>60000694</codigoMovimento>
+          <descricao>DIARIA ENFERMARIA DE 3 LEITOS COM BANHEIRO PRIVATIVO</descricao>
+          <valorUnitario>263.81</valorUnitario>
+          <quantidadeExecutada>1.0</quantidadeExecutada>
+          <dataExecucao>2017-01-05 14:00:00.0 UTC</dataExecucao>
+        </com.ops.expertsystem.Movimento>
+      </movimentos>
+    </com.ops.expertsystem.Guia>
+  </insert>
+  <fire-all-rules/>
+  <query out-identifier="validacoes" name="queryValidacao"/>
+</batch-execution>

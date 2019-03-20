@@ -1,0 +1,81 @@
+POST /kie-server/services/rest/server/containers/instances/ExpertSystem HTTP/1.1
+Host: ricardokanazawa.eastus2.cloudapp.azure.com:8081
+Content-Type: application/xml
+Authorization: Basic YWRtaW46YWRtaW4=
+X-KIE-ContentType: XSTREAM
+Cache-Control: no-cache
+Postman-Token: 0d81bce1-a576-36f9-67b1-17923d24c753
+
+<batch-execution lookup="MyStateless">
+  <insert>
+    <com.ops.expertsystem.Guia>
+      <id>BD029514538FE9F73D29DD258FB0C13F9E4A259E</id>
+      <codigoPrestador>1</codigoPrestador>
+      <movimentos>
+      	<com.ops.expertsystem.Movimento>
+          <codigoTabela>22</codigoTabela>
+          <codigoMovimento>20104090</codigoMovimento>
+          <descricao>ITEM 1</descricao>
+          <valorUnitario>650.25</valorUnitario>
+          <quantidadeExecutada>1.0</quantidadeExecutada>
+          <dataExecucao>2017-01-05 14:00:00.0 UTC</dataExecucao>
+        </com.ops.expertsystem.Movimento>
+        
+       	<com.ops.expertsystem.Movimento>
+          <codigoTabela>20</codigoTabela>
+          <codigoMovimento>129874</codigoMovimento>
+          <descricao>ITEM 2</descricao>
+          <valorUnitario>650.25</valorUnitario>
+          <quantidadeExecutada>1.0</quantidadeExecutada>
+          <dataExecucao>2017-01-05 14:00:00.0 UTC</dataExecucao>
+        </com.ops.expertsystem.Movimento>
+        
+        <com.ops.expertsystem.Movimento>
+          <codigoTabela>2</codigoTabela>
+          <codigoMovimento>132387</codigoMovimento>
+          <descricao>ITEM 3</descricao>
+          <valorUnitario>650.25</valorUnitario>
+          <quantidadeExecutada>1.0</quantidadeExecutada>
+          <dataExecucao>2017-01-05 14:00:00.0 UTC</dataExecucao>
+        </com.ops.expertsystem.Movimento>
+        
+        <com.ops.expertsystem.Movimento>
+          <codigoTabela>20</codigoTabela>
+          <codigoMovimento>247631</codigoMovimento>
+          <descricao>ITEM 4</descricao>
+          <valorUnitario>650.25</valorUnitario>
+          <quantidadeExecutada>1.0</quantidadeExecutada>
+          <dataExecucao>2017-01-05 14:00:00.0 UTC</dataExecucao>
+        </com.ops.expertsystem.Movimento>
+        
+        <com.ops.expertsystem.Movimento>
+          <codigoTabela>20</codigoTabela>
+          <codigoMovimento>60023384</codigoMovimento>
+          <descricao>ITEM 5</descricao>
+          <valorUnitario>650.25</valorUnitario>
+          <quantidadeExecutada>1.0</quantidadeExecutada>
+          <dataExecucao>2017-01-05 14:00:00.0 UTC</dataExecucao>
+        </com.ops.expertsystem.Movimento>
+        
+        <com.ops.expertsystem.Movimento>
+          <codigoTabela>20</codigoTabela>
+          <codigoMovimento>90228022</codigoMovimento>
+          <descricao>ITEM 6</descricao>
+          <valorUnitario>650.25</valorUnitario>
+          <quantidadeExecutada>1.0</quantidadeExecutada>
+          <dataExecucao>2017-01-05 14:00:00.0 UTC</dataExecucao>
+        </com.ops.expertsystem.Movimento>       
+        
+      </movimentos>
+    </com.ops.expertsystem.Guia>
+  </insert>
+  
+  <insert>
+  	 <com.ops.expertsystem.Controle>
+    	<maxRegras>10</maxRegras>
+    </com.ops.expertsystem.Controle>
+  </insert>
+  
+  <fire-all-rules/>
+  <query out-identifier="validacoes" name="queryValidacao"/>
+</batch-execution>
